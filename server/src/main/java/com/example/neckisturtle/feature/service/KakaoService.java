@@ -73,6 +73,7 @@ public class KakaoService {
 
                 String id = obj.get("id").toString();
                 String email = kakao_account.get("email").toString();
+                String name = properties.get("nickname").toString();
                 String profile_image = properties.get("profile_image").toString();
 
                 if (!userRepo.existsByEmail(email)) {
@@ -80,6 +81,7 @@ public class KakaoService {
                     User user = User.builder()
                             .kakaoId(id)
                             .email(email)
+                            .name(name)
                             .name("kakaoname")
                             .image_url(profile_image)
                             .accessToken(token.getToken())
