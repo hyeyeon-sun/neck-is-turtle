@@ -82,7 +82,6 @@ public class KakaoService {
                             .kakaoId(id)
                             .email(email)
                             .name(name)
-                            .name("kakaoname")
                             .image_url(profile_image)
                             .accessToken(token.getToken())
                             .refreshToken(token.getRefreshToken())
