@@ -106,6 +106,8 @@ public class KakaoService {
                     result.put("status", 200);
                     result.put("success", true);
                     result.put("message", "로그인 성공");
+                    result.put("accessToken", dto.getAccess_token());
+                    result.put("refreshToken", dto.getRefresh_token());
                     result.put("data", dto);
 
                     return result;
