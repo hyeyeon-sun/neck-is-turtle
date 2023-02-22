@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class KakaoDto {
 
-    private String access_token;
+    private String accessToken;
 
     @Builder
     public KakaoDto(String access_token) {
-        this.access_token = access_token;
+        this.accessToken = access_token;
     }
 }

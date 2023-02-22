@@ -33,7 +33,7 @@ public class User {
 
     @PostMapping("/kakao")
     public resultMap kakaoLogin(@RequestBody KakaoDto dto) throws IOException {
-        return kakaoService.SignupAndSignin(dto.getAccess_token());
+        return kakaoService.SignupAndSignin(dto.getAccessToken());
     }
 
     @PostMapping("/signin")
