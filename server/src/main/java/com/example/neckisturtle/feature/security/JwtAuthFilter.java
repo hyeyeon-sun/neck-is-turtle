@@ -33,8 +33,8 @@ class JwtAuthFilter extends GenericFilterBean {
 
         String token = ((HttpServletRequest)request).getHeader("Authorization");
 
-        if(!((HttpServletRequest) request).getRequestURI().equals("/api/v1/user/kakao") || !token.equals("undefined")) {
-            if (token != null) {
+        if(token != null) {
+            if (!((HttpServletRequest) request).getRequestURI().equals("/api/v1/user/kakao") || !token.equals("undefined")) {
                 try {
                     log.info("token {}", token);
                     log.info("verify {}", tokenService.verifyToken(token));
@@ -60,9 +60,10 @@ class JwtAuthFilter extends GenericFilterBean {
                     logger.error("Authentication Failed. Username or Password not valid.");
                     throw new JwtException("사용자 인증 실패");
                 }
-            }else {
-                System.out.println("토큰이 없잖아 !");
+
             }
+        }else {
+            System.out.println("토큰이 없잖아 !");
         }
 
         chain.doFilter(request, response);
