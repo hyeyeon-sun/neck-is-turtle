@@ -14,26 +14,8 @@ import java.util.Map;
 @CrossOrigin
 public class chatbot {
     @PostMapping(value = "/test", headers = {"Accept=application/json"})
-    public String getMain(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response){
-//
-//        ArrayList<resultMap> outputs = new ArrayList<resultMap>();
-//
-//        resultMap text = new resultMap();
-//        text.put("text", "hello I'm Ryan");
-//        resultMap simpleText = new resultMap();
-//        simpleText.put("simpleText", text);
-//
-//        outputs.add(simpleText);
-//
-//        resultMap template = new resultMap();
-//
-//        template.put("outputs", outputs);
-//
-//        resultMap result = new resultMap();
-//        result.put("vesion", "2.0");
-//        result.put("template", template);
-//
-//
+    public resultMap getMain(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response){
+
 
         try{
             ObjectMapper mapper = new ObjectMapper();
@@ -44,8 +26,25 @@ public class chatbot {
 
         }
 
-//        return result;
 
-        return "index";
+        ArrayList<resultMap> outputs = new ArrayList<resultMap>();
+
+        resultMap text = new resultMap();
+        text.put("text", "hello I'm Ryan");
+        resultMap simpleText = new resultMap();
+        simpleText.put("simpleText", text);
+
+        outputs.add(simpleText);
+
+        resultMap template = new resultMap();
+
+        template.put("outputs", outputs);
+
+        resultMap result = new resultMap();
+        result.put("vesion", "2.0");
+        result.put("template", template);
+
+        return result;
+
     }
 }
