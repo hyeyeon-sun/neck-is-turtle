@@ -1,8 +1,10 @@
 package com.example.neckisturtle.feature.service;
 
 import com.example.neckisturtle.core.resultMap;
+import com.example.neckisturtle.feature.domain.MissionRecord;
 import com.example.neckisturtle.feature.domain.Pose;
 import com.example.neckisturtle.feature.domain.User;
+import com.example.neckisturtle.feature.persistance.MissionRecordRepo;
 import com.example.neckisturtle.feature.persistance.PoseRepo;
 import com.example.neckisturtle.feature.persistance.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +15,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -26,15 +25,18 @@ public class ChatbotService {
 
     private final PoseRepo poseRepo;
 
+    private final MissionRecordRepo missionRecordRepo;
+
 
     public static String alg = "AES/CBC/PKCS5Padding";
     private final String key = "01234567890123456789012345678901";
     private final String iv = key.substring(0, 16); // 16byte
 
 
-    public ChatbotService(UserRepo userRepo, PoseRepo poseRepo) {
+    public ChatbotService(UserRepo userRepo, PoseRepo poseRepo,  MissionRecordRepo missionRecordRepo) {
         this.userRepo = userRepo;
         this.poseRepo = poseRepo;
+        this.missionRecordRepo = missionRecordRepo;
     }
 
     public String encrypt(String text) throws Exception {
@@ -76,11 +78,21 @@ public class ChatbotService {
 
         Pose pose = poseRepo.findByRegDtmAndUserId(new SimpleDateFormat("yyyy-MM-dd").parse(format), user).orElse(defaultPose);
 
+        List<MissionRecord> mission = missionRecordRepo.findAllByCompleteDtmAndUserId(
+                new SimpleDateFormat("yyyy-MM-dd").parse(format), user);
+
+        ArrayList<Integer> simpleMission = new ArrayList<Integer>();
+
+        for (MissionRecord record : mission) {
+            simpleMission.add(record.getMissionId().getMission_id());
+        }
+
         HashMap<String, Object> infoToFront = new HashMap<>();
         infoToFront.put("turtleTime", pose.getTurtleTime());
         infoToFront.put("straightTime", pose.getStraightTime());
         infoToFront.put("userName", user.getName());
         infoToFront.put("date", format);
+        infoToFront.put("mission", simpleMission);
 
         String encryptedInfo = this.encrypt(infoToFront.toString());
 
