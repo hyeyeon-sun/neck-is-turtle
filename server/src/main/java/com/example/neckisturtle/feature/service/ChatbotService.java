@@ -90,10 +90,19 @@ public class ChatbotService {
         resultMap simpleText = new resultMap();
         simpleText.put("simpleText", text);
 
-        outputs.add(simpleText);
+        //outputs.add(simpleText);
+
+
+        resultMap basicCard = new resultMap();
+        basicCard.put("title", "오늘의 거북목 리포트가 도착했습니다.");
+        basicCard.put("description", "반갑소 " + user.getName() + "양. 오늘의 거북목 리포트가 도착했소. 리포트를 보고 싶다면 하단의 링크를 클릭하시오.");
+        resultMap thumbnail = new resultMap();
+        thumbnail.put("imageUrl", "https://t1.kakaocdn.net/openbuilder/sample/lj3JUcmrzC53YIjNDkqbWK.jpg");
+        basicCard.put("thumbnail", thumbnail);
+        resultMap basicCardWrapper = new resultMap();
+        basicCardWrapper.put("basicCard", basicCard);
+        outputs.add(basicCardWrapper);
         template.put("outputs", outputs);
-
-
         resultMap result = new resultMap();
 
 //        template.put("name", kakaoUser.getName());
