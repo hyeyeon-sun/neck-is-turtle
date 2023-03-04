@@ -29,7 +29,15 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public void setErrorResponse(HttpStatus status, HttpServletResponse res, Throwable ex) throws IOException {
         res.setStatus(HttpStatus.OK.value());
-        res.setContentType("application/json; charset=UTF-8");
+//        res.setContentType("application/json; charset=UTF-8");
+        res.setHeader("Content-type", "application/json; charset=UTF-8");
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("my-header", "hello");
+        res.setHeader("access-control-allow-origin", "*");
+        res.setHeader("vary", "Origin");
+        res.setHeader("vary", "Access-Control-Request-Method");
+        res.setHeader("vary", "Access-Control-Request-Headers");
 
         JwtExceptionResponse jwtExceptionResponse = new JwtExceptionResponse(401, false, ex.getMessage());
         res.getWriter().write(jwtExceptionResponse.convertToJson());
