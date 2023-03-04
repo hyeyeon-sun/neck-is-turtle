@@ -84,24 +84,28 @@ public class ChatbotService {
 
         String encryptedInfo = this.encrypt(infoToFront.toString());
 
-
-//        resultMap text = new resultMap();
-//        text.put("text", "hello I'm Ryan");
-//        resultMap simpleText = new resultMap();
-//        simpleText.put("simpleText", text);
-//
-//        outputs.add(simpleText);
-//        template.put("outputs", outputs);
-
         resultMap template = new resultMap();
+        resultMap text = new resultMap();
+        text.put("text", "hello I'm Ryan");
+        resultMap simpleText = new resultMap();
+        simpleText.put("simpleText", text);
+
+        outputs.add(simpleText);
+        template.put("outputs", outputs);
+
+
         resultMap result = new resultMap();
         result.put("vesion", "2.0");
-        template.put("name", kakaoUser.getName());
-        template.put("straightTime", pose.getStraightTime());
-        template.put("turtieTime", pose.getTurtleTime());
-        template.put("encryptedInfo", encryptedInfo);
+//        template.put("name", kakaoUser.getName());
+//        template.put("straightTime", pose.getStraightTime());
+//        template.put("turtieTime", pose.getTurtleTime());
+//        template.put("encryptedInfo", encryptedInfo);
 
         result.put("template", template);
+
+
+
+
         return result;
         } catch (ParseException e) {
             throw new RuntimeException(e);
