@@ -1,6 +1,7 @@
 package com.example.neckisturtle.feature.controller;
 
 import com.example.neckisturtle.core.resultMap;
+import com.example.neckisturtle.feature.service.ChatbotService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,15 @@ import java.util.Map;
 @RequestMapping("/api/v1/chatbot")
 @CrossOrigin
 public class chatbot {
+
+    private final ChatbotService chatbotService;
+
+    public chatbot(ChatbotService chatbotService) {
+        this.chatbotService = chatbotService;
+    }
+
     @PostMapping(value = "/test", headers = {"Accept=application/json"})
     public resultMap getMain(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response){
-
-
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
@@ -25,8 +31,6 @@ public class chatbot {
         }catch (Exception e){
 
         }
-
-
         ArrayList<resultMap> outputs = new ArrayList<resultMap>();
 
         resultMap text = new resultMap();
@@ -46,5 +50,20 @@ public class chatbot {
 
         return result;
 
+    }
+
+
+    @PostMapping(value = "/todayInfo", headers = {"Accept=application/json"})
+    public resultMap getTodayInfo(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response){
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(params);
+            System.out.println(jsonInString);
+            int x = 0;
+        }catch (Exception e){
+
+        }
+
+        return chatbotService.getTodayInfo("2651139945");
     }
 }
