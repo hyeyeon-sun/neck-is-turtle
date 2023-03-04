@@ -110,7 +110,7 @@ public class ChatbotService {
         resultMap button = new resultMap();
         button.put("action", "webLink");
         button.put("label", "리포트 보러 바로가기");
-        button.put("webLinkUrl", "https://www.neckisturtle.com/report/sdf");
+        button.put("webLinkUrl", "https://www.neckisturtle.com/report/" + encryptedInfo);
 
         buttons.add(button);
 
