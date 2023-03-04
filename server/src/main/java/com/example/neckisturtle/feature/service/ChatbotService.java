@@ -1,6 +1,5 @@
 package com.example.neckisturtle.feature.service;
 
-import com.example.neckisturtle.core.AES256;
 import com.example.neckisturtle.core.resultMap;
 import com.example.neckisturtle.feature.domain.Pose;
 import com.example.neckisturtle.feature.domain.User;
