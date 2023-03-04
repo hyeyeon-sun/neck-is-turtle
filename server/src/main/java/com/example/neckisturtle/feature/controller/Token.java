@@ -28,7 +28,7 @@ public class Token {
     }
 
     @GetMapping("/token/refresh")
-    public resultMap refreshAuth(@RequestHeader(value="Refresh") String refresh, HttpServletRequest request, HttpServletResponse response) {
+    public resultMap refreshAuth(@RequestHeader(value="refresh") String refresh, HttpServletRequest request, HttpServletResponse response) {
         return myTokenService.refreshToken(request, response);
     }
 }
