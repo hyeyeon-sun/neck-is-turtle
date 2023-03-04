@@ -95,13 +95,14 @@ public class ChatbotService {
 
 
         resultMap result = new resultMap();
-        result.put("vesion", "2.0");
+
 //        template.put("name", kakaoUser.getName());
 //        template.put("straightTime", pose.getStraightTime());
 //        template.put("turtieTime", pose.getTurtleTime());
 //        template.put("encryptedInfo", encryptedInfo);
 
         result.put("template", template);
+        result.put("version", "2.0");
 
 
 
