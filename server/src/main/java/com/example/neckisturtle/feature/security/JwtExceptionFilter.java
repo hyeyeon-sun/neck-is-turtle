@@ -3,6 +3,7 @@ package com.example.neckisturtle.feature.security;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,10 +20,13 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         try {
             chain.doFilter(req, res); // go to 'JwtAuthenticationFilter'
         } catch (JwtException ex) {
+            System.out.println("여기까지 타고감 ? 1111");
             setErrorResponse(HttpStatus.UNAUTHORIZED, res, ex);
+            System.out.println("여기까지 타고감 ? 2222");
         }
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public void setErrorResponse(HttpStatus status, HttpServletResponse res, Throwable ex) throws IOException {
         res.setStatus(status.value());
         res.setContentType("application/json; charset=UTF-8");
