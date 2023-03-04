@@ -60,7 +60,7 @@ public class ChatbotService {
 
     public resultMap getTodayInfo(String kakaoId) {
         try {
-        ArrayList<resultMap> outputs = new ArrayList<resultMap>();
+
 
 
         User kakaoUser = userRepo.findByKakaoId(kakaoId).orElseThrow();
@@ -84,6 +84,7 @@ public class ChatbotService {
 
         String encryptedInfo = this.encrypt(infoToFront.toString());
 
+        ArrayList<resultMap> outputs = new ArrayList<resultMap>();
         resultMap template = new resultMap();
         resultMap text = new resultMap();
         text.put("text", "hello I'm Ryan");
@@ -102,8 +103,23 @@ public class ChatbotService {
         resultMap basicCardWrapper = new resultMap();
         basicCardWrapper.put("basicCard", basicCard);
         outputs.add(basicCardWrapper);
+
+
+        ArrayList<resultMap> buttons = new ArrayList<resultMap>();
+
+        resultMap button = new resultMap();
+        button.put("action", "webLink");
+        button.put("label", "리포트 보러 바로가기");
+        button.put("webLinkUrl", "https://www.neckisturtle.com/report/" + encryptedInfo);
+
+        buttons.add(button);
+
+        basicCardWrapper.put("buttons", buttons);
+
+
         template.put("outputs", outputs);
         resultMap result = new resultMap();
+
 
 //        template.put("name", kakaoUser.getName());
 //        template.put("straightTime", pose.getStraightTime());
