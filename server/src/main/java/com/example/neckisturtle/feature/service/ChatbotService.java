@@ -101,7 +101,7 @@ public class ChatbotService {
         thumbnail.put("imageUrl", "https://t1.kakaocdn.net/openbuilder/sample/lj3JUcmrzC53YIjNDkqbWK.jpg");
         basicCard.put("thumbnail", thumbnail);
         resultMap basicCardWrapper = new resultMap();
-        basicCardWrapper.put("basicCard", basicCard);
+
         outputs.add(basicCardWrapper);
 
 
@@ -110,11 +110,13 @@ public class ChatbotService {
         resultMap button = new resultMap();
         button.put("action", "webLink");
         button.put("label", "리포트 보러 바로가기");
-        button.put("webLinkUrl", "https://www.neckisturtle.com/report/" + encryptedInfo);
+        button.put("webLinkUrl", "https://www.neckisturtle.com/report/sdf");
 
         buttons.add(button);
 
-        basicCardWrapper.put("buttons", buttons);
+        basicCard.put("buttons", buttons);
+
+        basicCardWrapper.put("basicCard", basicCard);
 
 
         template.put("outputs", outputs);
