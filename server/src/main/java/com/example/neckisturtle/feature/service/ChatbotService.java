@@ -91,6 +91,8 @@ public class ChatbotService {
         String result = Base64.encodeBase64String(encryptedBytes);
         String keyForJS = Base64.encodeBase64String(KEY);
         System.out.println("THIS KEY WILL BE USED FOR JS-SIDE = " + keyForJS);
+        result = result.replace("\r", "");
+        result = result.replace("\n", "");
         return result;
     }
 
