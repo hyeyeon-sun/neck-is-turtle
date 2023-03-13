@@ -1,12 +1,17 @@
 package com.example.neckisturtle.feature.controller;
 
 import com.example.neckisturtle.core.resultMap;
+import com.example.neckisturtle.feature.dto.decryptDto;
 import com.example.neckisturtle.feature.service.ChatbotService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -63,7 +68,11 @@ public class chatbot {
         }catch (Exception e){
 
         }
-
         return chatbotService.getTodayInfo("2651139945");
+    }
+
+    @PostMapping(value = "/decrypt", headers = {"Accept=application/json"})
+    public resultMap getDecrypt(@RequestBody decryptDto dto) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ParseException {
+        return chatbotService.decrypt(dto.getEncrypted());
     }
 }
