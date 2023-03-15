@@ -34,7 +34,7 @@ class JwtAuthFilter extends GenericFilterBean {
         String token = ((HttpServletRequest)request).getHeader("Authorization");
 
         if(token != null) {
-            if (!((HttpServletRequest) request).getRequestURI().equals("/api/v1/user/kakao") && !token.equals("undefined")) {
+            if (!((HttpServletRequest) request).getRequestURI().equals("/api/v1/user/kakao") && !((HttpServletRequest) request).getRequestURI().equals("/api/v1/chatbot/decrypt") && !token.equals("undefined")) {
                 try {
                     log.info("token {}", token);
                     log.info("verify {}", tokenService.verifyToken(token));

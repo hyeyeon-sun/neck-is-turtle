@@ -27,17 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user").authenticated()
-                .antMatchers("/user/signup").permitAll()
-                .antMatchers("/user/kakao").permitAll()
-                .antMatchers("/token/refresh").permitAll()
+                .antMatchers("api/v1/user").authenticated()
+                .antMatchers("api/v1/user/signup").permitAll()
+                .antMatchers("api/v1/user/kakao").permitAll()
+                .antMatchers("api/v1/token/refresh").permitAll()
+                .antMatchers("api/v1/chatbot/decrypt").permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
                 //.oauth2Login().loginPage("/token/expired")
                 //.successHandler(successHandler)
                 //.userInfoEndpoint().userService(oAuth2UserService);
 
         //http.addFilterBefore(new JwtAuthFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
+        //http.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
     }
 }
