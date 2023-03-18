@@ -65,8 +65,8 @@ public class PoseService {
                 Pose pose = poseRepo.findByRegDtmAndUserId(
                         new SimpleDateFormat("yyyy-MM-dd").parse(format), user).orElseThrow();
                 pose.setPoseTime(
-                        pose.getStraightTime() + dto.getStraightTime(),
-                        pose.getTurtleTime() + dto.getTurtleTime());
+                        dto.getStraightTime(),
+                        dto.getTurtleTime());
                 poseRepo.save(pose);
                 TodayPoseDto resultDto = TodayPoseDto.builder()
                         .straightTime(pose.getStraightTime())
