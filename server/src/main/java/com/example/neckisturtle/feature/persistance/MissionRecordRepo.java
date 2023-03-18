@@ -27,4 +27,6 @@ public interface MissionRecordRepo extends JpaRepository<MissionRecord, Integer>
     List<MissionRecord> findByCompleteDtmBetweenOrderByRegDtm(Date start, Date end);
 
     List<MissionRecord> findByCompleteDtmBetweenAndUserIdOrderByRegDtm(Date start, Date end, User user);
+
+    boolean existsByCompleteDtmAndUserIdAndMissionId(Date date, User user, Mission mission);
 }

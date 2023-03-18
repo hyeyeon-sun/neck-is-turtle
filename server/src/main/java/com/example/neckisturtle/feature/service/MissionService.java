@@ -75,18 +75,23 @@ public class MissionService {
 
             //MissionRecord mission = missionRecordRepo.findByMissionIdAndUserId(amission, user).orElseThrow();
 
-            MissionRecord mission = MissionRecord.builder()
-                    .userId(user)
-                    .missionId(amission)
-                    .completeYn("Y")
-                    .completeDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
-                    .regDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
-                    .build();
-            missionRecordRepo.save(mission);
+            if (!missionRecordRepo.existsByCompleteDtmAndUserIdAndMissionId(new SimpleDateFormat("yyyy-MM-dd").parse(format), user, amission)) {
+                MissionRecord mission = MissionRecord.builder()
+                        .userId(user)
+                        .missionId(amission)
+                        .completeYn("Y")
+                        .completeDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
+                        .regDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
+                        .build();
+                missionRecordRepo.save(mission);
 //            mission.setComplateYn("Y");
 //            mission.setCompleteDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format));
 //            missionRecordRepo.save(mission);
+                return "성공";
+            }
+
             return "성공";
+
         }catch (Exception e) {
             log.info("error : {}", e);
             return "실패";
