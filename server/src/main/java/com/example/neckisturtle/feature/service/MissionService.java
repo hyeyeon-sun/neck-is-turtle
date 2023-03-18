@@ -4,6 +4,8 @@ import com.example.neckisturtle.feature.domain.Mission;
 import com.example.neckisturtle.feature.domain.MissionRecord;
 import com.example.neckisturtle.feature.domain.User;
 import com.example.neckisturtle.feature.dto.MissionDto;
+import com.example.neckisturtle.feature.dto.MissionListDto;
+import com.example.neckisturtle.feature.dto.MissionsDto;
 import com.example.neckisturtle.feature.persistance.MissionRecordRepo;
 import com.example.neckisturtle.feature.persistance.MissionRepo;
 import com.example.neckisturtle.feature.persistance.UserRepo;
@@ -13,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,10 +73,19 @@ public class MissionService {
             User user = userRepo.findByEmail(email).orElseThrow();
             Mission amission = missionRepo.findById(missionId).orElseThrow();
 
-            MissionRecord mission = missionRecordRepo.findByMissionIdAndUserId(amission, user).orElseThrow();
-            mission.setComplateYn("Y");
-            mission.setCompleteDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format));
+            //MissionRecord mission = missionRecordRepo.findByMissionIdAndUserId(amission, user).orElseThrow();
+
+            MissionRecord mission = MissionRecord.builder()
+                    .userId(user)
+                    .missionId(amission)
+                    .completeYn("Y")
+                    .completeDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
+                    .regDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format))
+                    .build();
             missionRecordRepo.save(mission);
+//            mission.setComplateYn("Y");
+//            mission.setCompleteDtm(new SimpleDateFormat("yyyy-MM-dd").parse(format));
+//            missionRecordRepo.save(mission);
             return "성공";
         }catch (Exception e) {
             log.info("error : {}", e);
@@ -84,7 +93,7 @@ public class MissionService {
         }
     }
 
-    public List<MissionDto> get3MonthPose(String email){
+    public List<MissionsDto> get3MonthPose(String email){
         try{
             Date today = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -100,7 +109,41 @@ public class MissionService {
             String startDay = formatter.format(cal.getTime());
 
 
+
             User user = userRepo.findByEmail(email).orElseThrow();
+
+            List<MissionRecord> missions = missionRecordRepo.findByCompleteDtmBetweenAndUserIdOrderByRegDtm(new SimpleDateFormat("yyyy-MM-dd").parse(startDay), new SimpleDateFormat("yyyy-MM-dd").parse(endDay), user);
+
+//
+//            List<MissionDto> collect = missions.stream()
+//                    .map(m-> new MissionDto(m.getMissionId().getMission_id()))
+//                    .collect(Collectors.toList());
+
+            List<MissionListDto> collect = missions.stream()
+                    .map(m-> new MissionListDto(m.getMissionId().getMission_id(), m.getCompleteDtm()))
+                    .collect(Collectors.toList());
+
+            Map<Date, List<MissionListDto>> datas = collect.stream().collect(Collectors.groupingBy(MissionListDto::getComplateDtm));
+
+
+            List<MissionsDto> result = new ArrayList<MissionsDto>();
+
+            for (Map.Entry<Date, List<MissionListDto>> entry : datas.entrySet()) {
+                result.add(new MissionsDto(formatter.format(entry.getKey()), entry.getValue().size()));
+            }
+//
+//            List<MissionsDto> result = data.stream()
+//                    .map(m-> new MissionsDto(m.getMissionId().getMission_id(), m.getCompleteDtm()))
+//                    .collect(Collectors.toList());
+
+
+
+            System.out.println("시작");
+            System.out.println(collect);
+
+
+            // 날짜별로 하나씩 가져와서 넣기 ?
+            // 3달짜리를 한번만 가져오고 이걸 바꾸기 ! 이게 낫겠다.
 
 //            List<Pose> poses = missionRecordRepo.findBy(
 //                    new SimpleDateFormat("yyyy-MM-dd").parse(startDay),
@@ -110,10 +153,12 @@ public class MissionService {
 //                    .map(m-> new WeekPoseDto(m.getRegDtm(), m.getStraightTime(), m.getTurtleTime()))
 //                    .collect(Collectors.toList());
 
-            return null;
+
+
+            return result;
 
         }catch(Exception e){
-
+            log.info("error : {}", e);
         }
 
         return null;
